@@ -16,7 +16,6 @@ public class Redes {
 	 * @return [0]: direccion de red, [1]: direccion de broadcast
 	 */
 	public String[] encontrarDireccionRedYBroadcast(String direccionHost, String mascara) {
-		String bitsRed = "";
 		String direccionBroadcastBinaria = "";
 		String direccionRedBinaria = "";
 		char bit;
@@ -82,13 +81,10 @@ public class Redes {
 			mascara = calcularMascara(mascara);
 		}
 		
-		String[] direccionesLimite = encontrarDireccionRedYBroadcast(direccionHost, mascara);
-		String[] octetosRed = direccionesLimite[0].split("\\.");
-		String[] octetosBroadcast = direccionesLimite[1].split("\\.");
 		int cantidadDireccionesAsignables = calcularCantidadDireccionesAsignables(mascara);
 		
-		int indiceOctetos = octetosRed.length - 1;
-		String direccionAnterior = direccionesLimite[0];
+		// La direccion desde la que se empieza a contar es la de red (sin incluirla)
+		String direccionAnterior = encontrarDireccionRedYBroadcast(direccionHost, mascara)[0];
 		
 		while(cantidadDireccionesAsignables > 0) {
 			listaDireccionesAsignables.add( incrementarDireccion( direccionAnterior ) );
