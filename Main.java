@@ -14,17 +14,19 @@ public class Main {
 		Operaciones operaciones = new Operaciones();
 		Redes redes = new Redes();
 		
-		System.out.println( redes.encontrarDireccionRedYBroadcast("172.16.243.128", "/16")[0] );
-		System.out.println("Direcciones asignables: " + redes.calcularCantidadDireccionesAsignables("/16"));
+//		System.out.println( redes.encontrarDireccionRedYBroadcast("172.16.243.128", "/16")[0] );
+//		System.out.println("Direcciones asignables: " + redes.calcularCantidadDireccionesAsignables("/16"));
+//		
+//		List<String> direccionesAsignables = redes.encontrarDireccionesAsignables("172.16.243.128", "/16");
+//		
+//		System.out.println("\nDirecciones asignables:");
+//		for( String d : direccionesAsignables ) {
+//			System.out.println(d);
+//		}
+//		
+//		System.out.println(direccionesAsignables.size());
 		
-		List<String> direccionesAsignables = redes.encontrarDireccionesAsignables("172.16.243.128", "/16");
-		
-		System.out.println("\nDirecciones asignables:");
-		for( String d : direccionesAsignables ) {
-			System.out.println(d);
-		}
-		
-		System.out.println(direccionesAsignables.size());
+		System.out.println( redes.determinarMascaraParaHosts("2") );
 		
 //		Scanner leer = new Scanner(System.in);
 //		

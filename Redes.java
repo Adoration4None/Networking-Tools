@@ -73,6 +73,12 @@ public class Redes {
 		return cantidadDireccionesAsignables;
 	}
 	
+	/**
+	 * 
+	 * @param direccionHost
+	 * @param mascara
+	 * @return
+	 */
 	public List<String> encontrarDireccionesAsignables(String direccionHost, String mascara) {
 		List<String> listaDireccionesAsignables = new ArrayList<>();
 		
@@ -94,13 +100,43 @@ public class Redes {
 		
 		return listaDireccionesAsignables;
 	}
+	
+	// -----------------------Dada la cantidad de hosts que necesita para una red ------------------------------
 
+	/**
+	 * 
+	 * @param cantidadHostsTexto
+	 * @return
+	 */
+	public String determinarMascaraParaHosts(String cantidadHostsTexto) {
+		String cantidadUnosMascara;
+		int cantidadHosts = Integer.parseInt(cantidadHostsTexto);
+		int potenciaSuficiente = 0;
+		int exponente = 0;
+		
+		// Encontrar minima potencia de 2 util
+		for(int i = 0; potenciaSuficiente < cantidadHosts; i++) {
+			potenciaSuficiente = (int) Math.pow(2, i);
+			exponente = i;
+		}
+		
+		cantidadUnosMascara = Integer.toString(32 - exponente);
+		
+		return "/" + cantidadUnosMascara;
+	}
+	
+	// ----- Dada una dirección de red, la máscara de subred correspondiente y la máscara de subred adaptada ----
+	
+	public int determinarCantidadSubredes(String direccionRed, String mascara, String mascaraAdaptada ) {
+		
+	}
+	
 	// ----------------------------------------- Utilidades -----------------------------------------------------
 	
 	
 
 
-	public String calcularMascara(String mascaraAbreviada) {
+	private String calcularMascara(String mascaraAbreviada) {
 		int cantidadUnosMascara = Integer.parseInt( mascaraAbreviada.substring(1) );
 		String mascaraBinaria = calcularMascaraBinaria(cantidadUnosMascara);
 		
