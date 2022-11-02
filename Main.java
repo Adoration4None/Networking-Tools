@@ -1,135 +1,197 @@
 package co.edu.uniquindio.parcial2infra;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import javax.swing.JOptionPane;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		String valor;
-		
-		Operaciones operaciones = new Operaciones();
-		Redes redes = new Redes();
-		
-//		System.out.println( redes.encontrarDireccionRedYBroadcast("172.16.243.128", "/16")[0] );
-//		System.out.println("Direcciones asignables: " + redes.calcularCantidadDireccionesAsignables("/16"));
-//		
-//		List<String> direccionesAsignables = redes.encontrarDireccionesAsignables("172.16.243.128", "/16");
-//		
-//		System.out.println("\nDirecciones asignables:");
-//		for( String d : direccionesAsignables ) {
-//			System.out.println(d);
-//		}
-//		
-//		System.out.println(direccionesAsignables.size());
-		
-		System.out.println( redes.determinarMascaraParaHosts("2") );
-		
-//		Scanner leer = new Scanner(System.in);
-//		
-//		System.out.println("Ingreseun numero en bnario");
-//		String bin = leer.nextLine();
-//		
-//		System.out.println(Integer.parseInt(bin, 2));
-//		displayMenu();
-
-//		System.out.println(opcion);
-//		menu(opcion);
+		System.out.println("\n-------------------------- BIENVENIDO ---------------------------");
+		displayMenu();
 	}
 
 	public static void displayMenu() throws Exception{
 		String opcion;
 		boolean flag = true;
+		@SuppressWarnings("resource")
+		Scanner leer = new Scanner(System.in);
 
 		while (flag == true) {
-			JOptionPane.showMessageDialog(null, "Digite uno de los siguientes n�meros para seleccionar una funci�n del programa:"
+			
+			System.out.println("\nDigite uno de los siguientes numeros para seleccionar una funcion del programa"
+					+ "\n\nConversiones entre sistemas numericos:"
 					+ "\n 1. Convertir un numero decimal a binario y hexadecimal "
 					+ "\n 2. Convertir un numero binario a decimal y hexadecimal"
 					+ "\n 3. Convertir un numero hexadecimal a binario y decimal"
+					+ "\n\nFunciones de redes:"
 					+ "\n 4. Hallar la direccion de red y broadcast de una red dada la direccion IP y mascara de subred"
 					+ "\n 5. Hallar la cantidad de direcciones IP asignables dada la direccion IP y mascara de subred"
 					+ "\n 6. Hallar la lista de direcciones IP asignables dada la direccion IP y mascara de subred"
 					+ "\n 7. Hallar la mascara de subred que puede usarse con el desperdicio minimo de direcciones dada la cantidad de hosts necesarios para una red"
+					+ "\n\nFunciones de subredes:"
 					+ "\n 8. Hallar la cantidad de subredes utilizables dada una direccion de red, mascara de subred y mascara de subred adaptada"
 					+ "\n 9. Hallar la cantidad de direcciones IP asignables dada una direccion de red, mascara de subred y mascara de subred adaptada"
 					+ "\n 10. Hallar el rango de direcciones IP asignables dada una direccion de red, mascara de subred y mascara de subred adaptada"
-					+ "\n 11. Hallar la direccion de una (dada?) dada una direccion de red, mascara de subred y mascara de subred adaptada"
-					+ "\n 12. Hallar la direccion de broadcast de una subred (dada?) dada una direccion de red, mascara de subred y mascara de subred adaptada"
-					+ "\n \n Presione en aceptar para seleccionar una de las opciones dadas");
+					+ "\n 11. Hallar la direccion de una subred dada"
+					+ "\n 12. Hallar la direccion de broadcast de una subred dada");
 
-			opcion = JOptionPane.showInputDialog("Seleccione una opcion");
+			System.out.println("\nSeleccione una opcion");
+			opcion = leer.nextLine();
 
 			flag = menu(opcion);
 		}
 
-		JOptionPane.showMessageDialog(null, "SEE YOU LATER!");
+		System.out.println("\nAdios");
 	}
 
 	public static boolean menu(String opcion){
-		//instancia de la clase Numero que tiene todos los metodos
-		Numero numero = new Numero();
-		String confirmacion, dato, mensaje;
-		ArrayList<String> mensaje2 = new ArrayList<String>();
+		Redes red = new Redes();
+		Operaciones operacion = new Operaciones();
+		@SuppressWarnings("resource")
+		Scanner leer = new Scanner(System.in);
+		String confirmacion, dato, dato2, dato3, dato4;
 
 		if(opcion.equals("1")){
-			dato = JOptionPane.showInputDialog("Escriba un numero decimal");
-			mensaje2.addAll(numero.convertirDecimal(dato));
-			JOptionPane.showMessageDialog(null, "El numero decimal convertido a binario es " + mensaje2.get(0) + " y a hexadecimal es " + mensaje2.get(1));
-		}
-		else if(opcion.equals("2")){
-			dato = JOptionPane.showInputDialog("Escriba un numero binario");
-			mensaje2.addAll(numero.convertirBinario(dato));
-			JOptionPane.showMessageDialog(null, "El numero binario convertido a decimal es " + mensaje2.get(0) + " y a hexadecimal es " + mensaje2.get(1));
-		}
-		else if(opcion.equals("3")){
-			dato = JOptionPane.showInputDialog("Escriba un numero hexadecimal");
-			mensaje2.addAll(numero.convertirHexadecimal(dato));
-			JOptionPane.showMessageDialog(null, "El numero hexadecimal convertido a decimal es " + mensaje2.get(0) + " y a binario es " + mensaje2.get(1));
-		}
-		else if(opcion.equals("4")){
-			dato = JOptionPane.showInputDialog("Escriba la direccion IP y mascara de subred en decimal separados por una espacio");
-			mensaje2 = numero.obtenerDireccionRed_Broadcast(dato);
-		}
-		else if(opcion.equals("5")){
-			dato = JOptionPane.showInputDialog("Escriba la direccion IP y mascara de subred en decimal separados por una espacio");
-			mensaje = numero.obtenerCantidadDireccionesAsignables(dato);
-		}
-		else if(opcion.equals("6")){
-			dato = JOptionPane.showInputDialog("Escriba la direccion IP y mascara de subred en decimal separados por una espacio");
-			mensaje2 = numero.obtenerListaDireccionesAsignables(dato);
-		}
-		else if(opcion.equals("7")){
-			dato = JOptionPane.showInputDialog("Escriba la cantidad de hosts necesarios para la red");
-			mensaje = numero.ObtenerMascaraSubred(dato);
-		}
-		else if(opcion.equals("8")){
-			dato = JOptionPane.showInputDialog("Escriba un numero decimal");
-			mensaje = numero.obtenerCantidadSubredesUtilizables(dato);
-		}
-		else if(opcion.equals("9")){
-			dato = JOptionPane.showInputDialog("Escriba un numero decimal");
-			mensaje = numero.obtenerCantidadDireccionesAsignables2(dato);
-		}
-		else if(opcion.equals("10")){
-			dato = JOptionPane.showInputDialog("Escriba un numero decimal");
-			mensaje = numero.obtenerRangoDireccionesAsignables(dato);
-		}
-		else if(opcion.equals("11")){
-			dato = JOptionPane.showInputDialog("Escriba un numero decimal");
-			mensaje = numero.obtenerDireccionSubredDada(dato);
-		}
-		else if(opcion.equals("12")){
-			dato = JOptionPane.showInputDialog("Escriba un numero decimal");
-			mensaje = numero.obtenerDireccionBroadcastSubredDada(dato);
-		}
-		else {
-			JOptionPane.showMessageDialog(null, "Numero invalido");
+			System.out.println("\nEscriba un numero decimal (no mayor a 255)");
+			dato = leer.nextLine();
+
+			System.out.println("\nEl numero decimal convertido a binario es " + operacion.convertirDecimalBinario(dato) + " y a hexadecimal es " + operacion.convertirDecimalHexadecimal(dato));
 		}
 
-		confirmacion = JOptionPane.showInputDialog("Seleccione 1 si desea volver a escoger una opcion, cualquier otra tecla para salir del programa");
+		else if(opcion.equals("2")){
+			System.out.println("\nEscriba un numero binario (no mayor a 8 bits)");
+			dato = leer.nextLine();
+
+			System.out.println("\nEl numero binario convertido a decimal es " + operacion.convertirBinarioDecimal(dato) + " y a hexadecimal es " + operacion.convertirBinarioHexadecimal(dato));
+		}
+
+		else if(opcion.equals("3")){
+			System.out.println("\nEscriba un numero hexadecimal (no mayor a FF)");
+			dato = leer.nextLine();
+
+			System.out.println("\nEl numero hexadecimal convertido a binario es " + operacion.convertirHexadecimalBinario(dato) + " y a decimal es " + operacion.convertirHexaDecimal(dato));
+		}
+
+		else if(opcion.equals("4")){
+			System.out.println("\nEscriba la direccion IP del host en formato decimal con puntos");
+			dato = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred en formato decimal con puntos o en formato abreviado (incluya el /)");
+			dato2 = leer.nextLine();
+
+			String[] resultado = red.encontrarDireccionRedYBroadcast(dato, dato2);
+			System.out.println("\nLa direccion de la red es " + resultado[0] + " y su direccion de broadcast " + resultado[1]);
+		}
+
+		else if(opcion.equals("5")){
+			System.out.println("\nEscriba la mascara de subred en formato decimal con puntos o en formato abreviado (incluya el /)");
+			dato = leer.nextLine();
+
+			System.out.println("\nLa cantidad de direcciones IP que se pueden asignar a hosts en esta red es de " + red.calcularCantidadDireccionesAsignables(dato));
+
+		}
+
+		else if(opcion.equals("6")){
+			System.out.println("\nEscriba la direccion IP del host en formato decimal con puntos");
+			dato = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred en formato decimal con puntos o en formato abreviado (incluya el /)");
+			dato2 = leer.nextLine();
+
+			List<String> lista = red.encontrarDireccionesAsignables(dato, dato2);
+			System.out.println("La lista de direcciones asignables a los hosts es:");
+			System.out.println( lista.toString() );
+			System.out.println( "(" + lista.size() + " direcciones)" );
+		}
+
+		else if(opcion.equals("7")){
+			System.out.println("\nEscriba la cantidad de hosts que necesita para la red");
+			dato = leer.nextLine();
+
+			System.out.println("La mascara de subred que puede ser utilizada con el desperdicio minimo de direcciones es: "+ red.determinarMascaraParaHosts(dato));
+		}
+
+		else if(opcion.equals("8")){
+			System.out.println("\nEscriba la direccion de la red en formato decimal con puntos");
+			dato = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred para la red en formato decimal con puntos o abreviada (incluya el /)");
+			dato2 = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred adaptada en formato decimal con puntos o abreviada (incluya el /)");
+			dato3 = leer.nextLine();
+
+			System.out.println("La cantidad de subredes que se pueden utilizar es de "+ red.determinarCantidadSubredes(dato, dato2, dato3));
+		}
+
+		else if(opcion.equals("9")){
+			System.out.println("\nEscriba la direccion de la red en formato decimal con puntos");
+			dato = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred para la red en formato decimal con puntos o abreviada (incluya el /)");
+			dato2 = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred adaptada en formato decimal con puntos o abreviada (incluya el /)");
+			dato3 = leer.nextLine();
+
+			System.out.println("La cantidad de direcciones asignables para hosts es de "+ red.determinarCantidadDireccionesAsignablesHostsSubred(dato, dato2, dato3));
+		}
+
+		else if(opcion.equals("10")){
+			System.out.println("\nEscriba la direccion de la red en formato decimal con puntos");
+			dato = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred para la red en formato decimal con puntos o abreviada (incluya el /)");
+			dato2 = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred adaptada en formato decimal con puntos o abreviada (incluya el /)");
+			dato3 = leer.nextLine();
+			
+			List< List<String> > rangosDirecciones = red.determinarRangoDireccionesAsignablesHosts(dato, dato2, dato3);
+			
+			for(int i = 1; i <= rangosDirecciones.size(); i++) {
+				System.out.println("Subred " + i + ":" + rangosDirecciones.get(i-1).toString() );
+			}
+		}
+
+		else if(opcion.equals("11")){
+			System.out.println("\nEscriba la direccion de la red en formato decimal con puntos");
+			dato = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred para la red en formato decimal con puntos o abreviada (incluya el /)");
+			dato2 = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred adaptada en formato decimal con puntos o abreviada (incluya el /)");
+			dato3 = leer.nextLine();
+			
+			System.out.println("\n¿De cual subred desea conocer la direccion? (numero)");
+			dato4 = leer.nextLine();
+			
+			System.out.println("\nLa direccion de la subred " + dato4 + " en la red es: " + red.encontrarDireccionSubredYBroadcast(dato, dato2, dato3, dato4)[0]);
+		}
+
+		else if(opcion.equals("12")){
+			System.out.println("\nEscriba la direccion de la red en formato decimal con puntos");
+			dato = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred para la red en formato decimal con puntos o abreviada (incluya el /)");
+			dato2 = leer.nextLine();
+
+			System.out.println("\nEscriba la mascara de subred adaptada en formato decimal con puntos o abreviada (incluya el /)");
+			dato3 = leer.nextLine();
+			
+			System.out.println("\n¿De cual subred desea conocer la direccion de broadcast? (numero)");
+			dato4 = leer.nextLine();
+			
+			System.out.println("\nLa direccion de broadcast de la subred " + dato4 + " en la red es: " + red.encontrarDireccionSubredYBroadcast(dato, dato2, dato3, dato4)[1]);
+		}
+
+		else {
+			System.out.println("\nNumero invalido");
+		}
+
+		System.out.println("\nSeleccione 1 si desea volver a escoger una opcion, cualquier otra tecla para salir del programa");
+		confirmacion = leer.nextLine();
 
 		if(confirmacion.equals("1")){
 			return true;

@@ -2,7 +2,7 @@ package co.edu.uniquindio.parcial2infra;
 
 public class Operaciones {
 	
-	// --------------------------------------- Entrada decimal -----------------------------------------------
+	// ---------------------------------------- Entrada decimal -----------------------------------------------
 	
 	/**
 	 * 
@@ -38,18 +38,18 @@ public class Operaciones {
 		
 		String hexadecimal = "";
 		int valorDecimal = Integer.parseInt(decimal);
+		int digito;
 		
 		for(int i = 0; i < potencias.length; i++) {
-			int digito = valorDecimal / potencias[i];
+			digito = valorDecimal / potencias[i];
 			hexadecimal += completarHexadecimal(digito);
-			
-			if(digito != 0) valorDecimal -= potencias[i] * digito;
+			valorDecimal -= potencias[i] * digito;
 		}
 		
 		return hexadecimal;
 	}
 	
-	// -------------------------------------- Entrada binaria --------------------------------------------------
+	// ------------------------------------------ Entrada binaria ---------------------------------------------
 	
 	/**
 	 * 
@@ -140,13 +140,13 @@ public class Operaciones {
 	}
 	
 	private int invertirHexadecimal(char digito) {
-		switch(digito) {
-		case 'A': return 10;
-		case 'B': return 11;
-		case 'C': return 12;
-		case 'D': return 13;
-		case 'E': return 14;
-		case 'F': return 15;
+		switch( (digito+"").toUpperCase() ) {
+		case "A": return 10;
+		case "B": return 11;
+		case "C": return 12;
+		case "D": return 13;
+		case "E": return 14;
+		case "F": return 15;
 		default: return Integer.parseInt( ""+digito);
 		}
 	}
@@ -163,6 +163,12 @@ public class Operaciones {
 		
 		if(indicePrimerUno == -1) return "";
 		return binario.substring(indicePrimerUno);
+	}
+	
+	public String reducirBinario(String binario, int numeroBits) {
+		int indicePartida = (binario.length() - numeroBits);
+		
+		return binario.substring(indicePartida);
 	}
 
 	private int encontrarPrimerUno(String binario, int i) {
