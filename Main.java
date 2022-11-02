@@ -134,7 +134,7 @@ public class Main {
 			System.out.println("\nEscriba la mascara de subred adaptada en formato decimal con puntos o abreviada (incluya el /)");
 			dato3 = leer.nextLine();
 
-			System.out.println("La cantidad de direcciones asignables para hosts es de "+ red.determinarCantidadDireccionesAsignablesHostsSubred(dato, dato2, dato3));
+			System.out.println("La cantidad de direcciones asignables para hosts es de "+ red.determinarCantidadDireccionesAsignablesHostsSubredes(dato, dato2, dato3));
 		}
 
 		else if(opcion.equals("10")){

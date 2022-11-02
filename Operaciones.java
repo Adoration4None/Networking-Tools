@@ -5,9 +5,9 @@ public class Operaciones {
 	// ---------------------------------------- Entrada decimal -----------------------------------------------
 	
 	/**
-	 * 
-	 * @param decimal
-	 * @return
+	 * Converte un numero decimal a su equivalente en binario
+	 * @param decimal no mayor a 255
+	 * @return binario de 8 bits
 	 */
 	public String convertirDecimalBinario(String decimal) {
 		// Como el resultado tiene que ser de 8 bits, las potencias solo llegan hasta 2^7
@@ -28,9 +28,9 @@ public class Operaciones {
 	}
 	
 	/**
-	 * 
-	 * @param decimal
-	 * @return
+	 * Converte un numero decimal a su equivalente en hexadecimal
+	 * @param decimal no mayor a 255
+	 * @return hexadecimal de 2 digitos
 	 */
 	public String convertirDecimalHexadecimal(String decimal) {
 		// Si el resultado en binario debe ser de 8 bits, entonces en hexadecimal no supera los 2 digitos
@@ -52,9 +52,9 @@ public class Operaciones {
 	// ------------------------------------------ Entrada binaria ---------------------------------------------
 	
 	/**
-	 * 
-	 * @param binario
-	 * @return
+	 * Convierte un numero binario en su equivalente a decimal
+	 * @param binario no mayor a 8 bits
+	 * @return decimal
 	 */
 	public String convertirBinarioDecimal(String binario) {
 		// Como los binarios son de 8 bits, las potencias solo llegan hasta 2^7
@@ -72,9 +72,9 @@ public class Operaciones {
 	}
 
 	/**
-	 * 
-	 * @param binario
-	 * @return
+	 * Convierte un numero binario en su equivalente a hexadecimal
+	 * @param binario no mayor a 8 bits
+	 * @return hexadecimal de 2 digitos
 	 */
 	public String convertirBinarioHexadecimal(String binario) {
 		// Como los binarios son de 8 bits, entonces en hexadecimal los numeros no superan los 2 digitos
@@ -93,9 +93,9 @@ public class Operaciones {
 	// -------------------------------------- Entrada hexadecimal ----------------------------------------------
 	
 	/**
-	 * 
-	 * @param hexadecimal
-	 * @return
+	 * Convierte un numero hexadecimal en su equivalente a decimal
+	 * @param hexadecimal de 2 digitos
+	 * @return decimal
 	 */
 	public String convertirHexaDecimal(String hexadecimal) {
 		// Si el resultado en binario debe ser de 8 bits, entonces en hexadecimal no supera los 2 digitos
@@ -111,7 +111,11 @@ public class Operaciones {
 		return String.valueOf(decimal);
 	}
 	
-	
+	/**
+	 * Convierte un numero hexadecimal en su equivalente a binario 
+	 * @param hexadecimal de dos digitos
+	 * @return binario de 8 bits
+	 */
 	public String convertirHexadecimalBinario(String hexadecimal) {
 		// Como los binarios son de 8 bits, entonces en hexadecimal los numeros no superan los 2 digitos
 		
@@ -164,18 +168,18 @@ public class Operaciones {
 		if(indicePrimerUno == -1) return "";
 		return binario.substring(indicePrimerUno);
 	}
-	
-	public String reducirBinario(String binario, int numeroBits) {
-		int indicePartida = (binario.length() - numeroBits);
-		
-		return binario.substring(indicePartida);
-	}
 
 	private int encontrarPrimerUno(String binario, int i) {
 		if(binario.charAt(i) == '1') return i;
 		
 		if(i+1 < binario.length()) return encontrarPrimerUno(binario, ++i);
 		return -1;
+	}
+	
+	public String reducirBinario(String binario, int numeroBits) {
+		int indicePartida = (binario.length() - numeroBits);
+		
+		return binario.substring(indicePartida);
 	}
 
 }

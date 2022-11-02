@@ -10,7 +10,7 @@ public class Redes {
 	// --------------------- Dada la dirección IP de un host y la máscara de subred -----------------------------
 	
 	/**
-	 * 
+	 * Calcula la direccion de red y direccion de broadcast dada una direccion de host y una mascara de subred
 	 * @param direccionHost
 	 * @param mascara
 	 * @return [0]: direccion de red, [1]: direccion de broadcast
@@ -43,7 +43,6 @@ public class Redes {
 				if(bit == '0') direccionBroadcastBinaria += "1";
 				else direccionBroadcastBinaria += bit;
 			}
-
 		}
 		
 		return new String[] {calcularDireccionDecimal(direccionRedBinaria), 
@@ -51,10 +50,9 @@ public class Redes {
 	}
 	
 	/**
-	 * 
-	 * @param direccionHost
+	 * Calcula la cantidad de direcciones IP que se pueden asignar a hosts dentro de una red
 	 * @param mascara
-	 * @return
+	 * @return cantidad de direcciones asignables para hosts
 	 */
 	public int calcularCantidadDireccionesAsignables(String mascara) {
 		int numeroBitsHosts;
@@ -74,10 +72,10 @@ public class Redes {
 	}
 	
 	/**
-	 * 
-	 * @param direccionHost
+	 * Retorna la lista de direcciones IP asignables a los hosts de una red 
+	 * @param direccionHost dentro de la red
 	 * @param mascara
-	 * @return
+	 * @return lista completa de direcciones asignables para hosts
 	 */
 	public List<String> encontrarDireccionesAsignables(String direccionHost, String mascara) {
 		List<String> listaDireccionesAsignables = new ArrayList<>();
@@ -93,7 +91,10 @@ public class Redes {
 		String direccionAnterior = encontrarDireccionRedYBroadcast(direccionHost, mascara)[0];
 		
 		while(cantidadDireccionesAsignables > 0) {
+			// Se suma 1 a la direccion anterior y se agrega a la lista
 			listaDireccionesAsignables.add( incrementarDireccion( direccionAnterior ) );
+			
+			// Se actualiza la direccion anterior
 			direccionAnterior = incrementarDireccion( direccionAnterior );
 			cantidadDireccionesAsignables--;
 		}
@@ -104,9 +105,9 @@ public class Redes {
 	// -----------------------Dada la cantidad de hosts que necesita para una red ------------------------------
 
 	/**
-	 * 
-	 * @param cantidadHostsTexto
-	 * @return
+	 * Encuentra la mascara que ofrezca el menor desperdicio de direcciones para una cantidad de hosts dada
+	 * @param cantidadHosts
+	 * @return Mascara de subred en formato abreviado
 	 */
 	public String determinarMascaraParaHosts(String cantidadHostsTexto) {
 		String cantidadUnosMascara;
@@ -128,11 +129,11 @@ public class Redes {
 	// ----- Dada una dirección de red, la máscara de subred correspondiente y la máscara de subred adaptada ----
 	
 	/**
-	 * 
+	 * Calcula la cantidad de subredes que se pueden usar a partir de una direccion de red
 	 * @param direccionRed
 	 * @param mascara
 	 * @param mascaraAdaptada
-	 * @return
+	 * @return cantidad de subredes utilizables dentro de la red
 	 */
 	public int determinarCantidadSubredes(String direccionRed, String mascara, String mascaraAdaptada) {
 		int bitsSubred = calcularBitsSubred(mascara, mascaraAdaptada);
@@ -140,18 +141,26 @@ public class Redes {
 	}
 
 	/**
-	 * 
+	 * Calcula la cantidad de direcciones IP que se pueden asignar a los hosts de una red dividida en subredes
+	 * @param direccionRed
+	 * @param mascara
 	 * @param mascaraAdaptada
-	 * @return
+	 * @return Cantidad de direcciones asignables para hosts
 	 */
-	public int determinarCantidadDireccionesAsignablesHostsSubred(String direccionRed, String mascara, String mascaraAdaptada) {
+	public int determinarCantidadDireccionesAsignablesHostsSubredes(String direccionRed, String mascara, String mascaraAdaptada) {
 		int cantidadSubredes = determinarCantidadSubredes(direccionRed, mascara, mascaraAdaptada);
 		return calcularCantidadDireccionesAsignables(mascaraAdaptada) * cantidadSubredes;
 	}
 	
+	/**
+	 * Retorna las listas de direcciones asignables a los hosts de cada subred dentro de una red
+	 * @param direccionRed
+	 * @param mascara
+	 * @param mascaraAdaptada
+	 * @return Lista de listas de direcciones asignables para hosts en cada subred
+	 */
 	public List< List<String> > determinarRangoDireccionesAsignablesHosts(String direccionRed, String mascara, String mascaraAdaptada) {
 		int cantidadSubredes = determinarCantidadSubredes(direccionRed, mascara, mascaraAdaptada);
-		
 		String direccionSubred;
 		String primeraDireccionHostSubred;
 		
@@ -180,12 +189,12 @@ public class Redes {
 	}
 	
 	/**
-	 * 
+	 * Calcula la direccion de subred y direccion de broadcast de una subred dada dentro de una red 
 	 * @param direccionRed
 	 * @param mascara
 	 * @param mascaraAdaptada
 	 * @param subred
-	 * @return
+	 * @return [0]: direccion de subred, [1]: direccion de broadcast de subred
 	 */
 	public String[] encontrarDireccionSubredYBroadcast(String direccionRed, String mascara, String mascaraAdaptada, String subred) {
 		String bitsSubred = "";
@@ -223,7 +232,7 @@ public class Redes {
 			indiceBits++;
 		}
 		
-		// Puede ser que con los bits obtenidos anteriormente, algunos octetos queden incompletos 
+		// Puede ser que con los bits obtenidos anteriormente, algunos octetos queden incompletos
 
 		// Se obtienen los bits para la subred correspondiente
 		bitsSubred = operaciones.reducirBinario(operaciones.convertirDecimalBinario(subred), numeroBitsSubred); 
@@ -237,7 +246,7 @@ public class Redes {
 		
 		// Los bits que falten para completar 32 seran los asignados para los hosts, por lo tanto:
 		
-		// Para la direccion de la subred, se llenan los bits de hosts con ceros:
+		// Para la direccion de la subred, se llenan los bits de hosts con ceros, y para la de broadcast se llenan con unos:
 		for(int i = contadorBitsCompletados; i < 32; i++) {
 			direccionSubredBinaria += "0";
 			direccionBroadcastSubred += "1";
@@ -253,6 +262,11 @@ public class Redes {
 	
 	// ----------------------------------------- Utilidades -----------------------------------------------------
 
+	/**
+	 * Convierte una mascara de red en formato abreviado a su equivalente en formato decimal con puntos
+	 * @param mascaraAbreviada
+	 * @return mascara en formato decimal con puntos
+	 */
 	private String calcularMascara(String mascaraAbreviada) {
 		int cantidadUnosMascara = Integer.parseInt( mascaraAbreviada.substring(1) );
 		String mascaraBinaria = calcularMascaraBinaria(cantidadUnosMascara);
@@ -260,6 +274,11 @@ public class Redes {
 		return calcularDireccionDecimal(mascaraBinaria);
 	}
 	
+	/**
+	 * Retorna una mascara en formato binario con puntos dada su cantidad de unos
+	 * @param cantidadUnosMascara
+	 * @return mascara en formato binario con puntos
+	 */
 	private String calcularMascaraBinaria(int cantidadUnosMascara) {
 		String mascaraBinaria = "";
 		
@@ -273,6 +292,11 @@ public class Redes {
 		return mascaraBinaria;
 	}
 	
+	/**
+	 * Convierte una direccion IP en formato decimal con puntos a su equivalente en formato binario con puntos
+	 * @param direccionDecimal con puntos
+	 * @return direccion binaria con puntos
+	 */
 	private String calcularDireccionBinaria(String direccionDecimal) {
 		// El "\\" es porque split no acepta caracteres, sino expresiones regulares
 		// Entonces si pongo solo el "." no va a separar nada, porque el "." significa "cualquier caracter"
@@ -287,6 +311,11 @@ public class Redes {
 		return direccionBinaria;
 	}
 	
+	/**
+	 * Convierte una direccion IP en formato binario con puntos a su equivalente en formato decimal con puntos
+	 * @param direccionBinaria con puntos
+	 * @return direccion decimal con puntos
+	 */
 	private String calcularDireccionDecimal(String direccionBinaria) {
 		// El "\\" es porque split no acepta caracteres, sino expresiones regulares
 		// Entonces si pongo solo el "." no va a separar nada, porque el "." significa "cualquier caracter"
@@ -301,6 +330,11 @@ public class Redes {
 		return direccionDecimal;
 	}
 	
+	/**
+	 * Retorna la cantidad de bits en 1 que contiene una mascara en formato decimal con puntos
+	 * @param mascaraDecimal
+	 * @return cantidad de bits en 1 de la mascara
+	 */
 	private int encontrarCantidadUnosMascara(String mascaraDecimal) {
 		String mascaraBinaria = calcularDireccionBinaria(mascaraDecimal);
 		int contadorUnos = 0;
@@ -312,16 +346,16 @@ public class Redes {
 	}
 	
 	/**
-	 * 
+	 * Suma 1 a una dada direccion IP en formato decimal con puntos
 	 * @param direccionDecimal
-	 * @return
+	 * @return direccionDecimal + 1
 	 */
 	private String incrementarDireccion(String direccionDecimal) {
 		String[] octetos = direccionDecimal.split("\\.");
-		int valor;
 		int indice = octetos.length - 1;
 		String[] bufferOctetos = new String[octetos.length];
 		String nuevaDireccion = "";
+		int valor;
 		
 		while(indice >= 0) {
 			valor = Integer.parseInt(octetos[indice]);
@@ -351,52 +385,11 @@ public class Redes {
 	}
 	
 	/**
-	 * 
-	 * @param direccionDecimal
-	 * @param incremento
-	 * @return
+	 * Calcula el numero de bits que pueden tener las subredes de una determinada red
+	 * @param mascara
+	 * @param mascaraAdaptada
+	 * @return Numero de bits que se pueden usar para las subredes
 	 */
-	public String incrementarDireccion(String direccionDecimal, int incremento) {
-		String[] octetos = direccionDecimal.split("\\.");
-		int valor;
-		int indice = octetos.length - 1;
-		String[] bufferOctetos = new String[octetos.length];
-		String nuevaDireccion = "";
-		
-		while(indice >= 0) {
-			valor = Integer.parseInt(octetos[indice]);
-			
-			if(valor + incremento <= 255) {
-				valor += incremento;
-				bufferOctetos[indice] = Integer.toString(valor);
-				break;
-			}
-			else {
-				bufferOctetos[indice] = "0";
-				/* 
-				 * Ahora el incremento sera lo que le sobra a 255 cuando se hace el incremento sobre el valor
-				 * Ejm: 
-				 * valor = 253, incremento = 3 -> valor + incremento = 256 -> Sobra 1
-				 * o sea que ahora el incremento para el octeto anterior sera solo de 1
-				 */
-				incremento = Math.abs( 255 - (valor + incremento) );
-				indice--;
-			}
-		}
-		
-		// Si en el buffer hay octetos vacios, estos se rellenan con los octetos iniciales de la direccion
-		for(int i = 0; i < bufferOctetos.length; i++) {
-			if(bufferOctetos[i] == null) {
-				bufferOctetos[i] = octetos[i];
-			}
-			
-			nuevaDireccion += bufferOctetos[i];
-			if(i != 3) nuevaDireccion += ".";
-		}
-		
-		return nuevaDireccion;
-	}
-	
 	private int calcularBitsSubred(String mascara, String mascaraAdaptada) {
 		
 		// Si la mascara tiene tres o menos caracteres, entonces esta en formato abreviado
@@ -415,6 +408,11 @@ public class Redes {
 		return cantidadUnosMascaraAdaptada - cantidadUnosMascara;
 	}
 	
+	/**
+	 * Recibe una direccion en formato binario con algunos octetos sin separar por puntos, y la retorna con puntos
+	 * @param direccionBinaria con algunos cotetos sin separar
+	 * @return direccion binaria correctamente separada por puntos
+	 */
 	public String dividirOctetos(String direccionBinaria) {
 		String nuevoOcteto = "";
 		String[] octetos = direccionBinaria.split("\\.");
@@ -430,6 +428,7 @@ public class Redes {
 				nuevosOctetos[i] = octetos[i];
 			}
 			else {
+				// k recorre el "octeto" que no tenga 8 bits 
 				for(int k = 1; k <= octetos[i].length(); k++) {	
 					nuevoOcteto += octetos[i].charAt(k-1);
 					
@@ -441,7 +440,6 @@ public class Redes {
 				}
 				
 			}
-
 		}
 		
 		return nuevosOctetos[0] + "." + nuevosOctetos[1] + "." + nuevosOctetos[2] + "." + nuevosOctetos[3];
